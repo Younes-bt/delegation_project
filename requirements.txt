@@ -1,0 +1,10 @@
+django
+djangorestframework
+djangorestframework-simplejwt  
+django-cors-headers  
+django-environ  
+psycopg2-binary 
+djangorestframework-datatables
+drf-yasg 
+whitenoise 
+gunicorn 
