@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'rest_framework',  # DRF
     'rest_framework_simplejwt',  # JWT authentication
     'corsheaders',  # CORS handling
-    'accounts',  # Your custom app for authentication
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +140,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
