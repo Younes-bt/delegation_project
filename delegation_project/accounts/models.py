@@ -14,8 +14,9 @@ class CustomUser(AbstractUser):
 
     ROLE_CHOICES = (
         ('admin', 'Admin'),
-        ('association', 'Association'),
+        ('association_staff', 'Association_staff'),
         ('teacher', 'Teacher'),
+        ('student', 'Student'),
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
@@ -120,7 +121,7 @@ class UserProfile(models.Model):
     group = models.CharField(max_length=10, choices=GROUP_CHOICES, null=True, blank=True)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name + " | " + self.role
+        return f"{self.user.role} : {self.first_name} {self.last_name}"
 
 
 
