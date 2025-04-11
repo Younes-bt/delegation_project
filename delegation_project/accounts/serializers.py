@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Association, Center, Training, City, UserProfile
+from .models import Association, Center, Training, City, UserProfile, Room
 
 
 User = get_user_model()
@@ -35,6 +35,10 @@ class CitySerializer(serializers.ModelSerializer):
         model = City
         fields = '__all__'    
 
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ['id', 'name', 'center', 'capacity']
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True) 

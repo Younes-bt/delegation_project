@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',  # JWT authentication
     'corsheaders',  # CORS handling
     'accounts',
+    'training',
+    'schedule',
 ]
 
 MIDDLEWARE = [

@@ -12,4 +12,5 @@ urlpatterns = [
     path('accounts/users/<int:pk>/', UserDetailView.as_view(), name='user_detail'),
     path('accounts/auth/', include('rest_framework.urls')),
     path('accounts/', include('accounts.urls')),
+    path('training/', include('training.urls')),
 ]

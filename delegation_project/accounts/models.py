@@ -52,11 +52,20 @@ GROUP_CHOICES = (
     ('group_9', 'Group 9'),
 )
 
+class City(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class Association(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
-    city = models.CharField(max_length=100, null=True, blank=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
     president = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
@@ -71,7 +80,7 @@ class Center(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
-    city = models.CharField(max_length=100, null=True, blank=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
     association = models.ForeignKey(Association, on_delete=models.CASCADE, null=True, blank=True)
@@ -91,15 +100,22 @@ class Training(models.Model):
 
     def __str__(self):
         return self.name
-
-class City(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    
+class TrainingGroup(models.Model):
+    name = models.CharField(max_length=50)
+    training = models.ForeignKey(Training, on_delete=models.CASCADE)
+    center = models.ForeignKey(Center, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.training.name} @ {self.center.name}"
+
+class Room(models.Model):
+    name = models.CharField(max_length=100)
+    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='rooms')
+    capacity = models.PositiveIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Room: {self.name} - {self.center.name}"
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -118,7 +134,7 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     training = models.ForeignKey(Training, on_delete=models.CASCADE, null=True, blank=True)
-    group = models.CharField(max_length=10, choices=GROUP_CHOICES, null=True, blank=True)
+    group = models.ForeignKey(TrainingGroup, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.role} : {self.first_name} {self.last_name}"
