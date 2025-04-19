@@ -1,12 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Exercise, Progress, Submission, Mark, Attendance
-
-# --- Course Serializer ---
-class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = '__all__'
-
+from .models import Exercise, Progress, Submission, Mark, Attendance, AnnualDistribution, Control
 
 # --- Exercise Serializer ---
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -40,6 +33,24 @@ class MarkSerializer(serializers.ModelSerializer):
 class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
+        fields = '__all__'
+
+
+# --- Annual Distribution Serializer ---
+
+class AnnualDistributionSerializer(serializers.ModelSerializer):
+    training = serializers.StringRelatedField()
+    teacher = serializers.StringRelatedField()  # Optional: display teacher name
+    month_display = serializers.CharField(source='get_month_display', read_only=True)
+
+    class Meta:
+        model = AnnualDistribution
+        fields = ['id', 'month', 'month_display', 'week', 'teacher', 'training', 'title', 'details']
+
+# --- Control Serializer ---
+class ControlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Control
         fields = '__all__'
 
 

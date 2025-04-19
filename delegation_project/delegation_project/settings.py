@@ -34,9 +34,11 @@ INSTALLED_APPS = [
     'rest_framework',  # DRF
     'rest_framework_simplejwt',  # JWT authentication
     'corsheaders',  # CORS handling
+    'django_filters',  # Django Filter
     'accounts',
     'training',
-    'schedule',
+    'class_timetable',
+    'reports',  # Attendance reporting app
 ]
 
 MIDDLEWARE = [
@@ -55,7 +57,7 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # Frontend React app 
+    'http://localhost:5173',  # Frontend React app 
 ]
 
 ROOT_URLCONF = 'delegation_project.urls'
@@ -89,6 +91,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'TOKEN_OBTAIN_SERIALIZER': 'accounts.serializers.CustomTokenObtainPairSerializer',
 }
 
 # Database

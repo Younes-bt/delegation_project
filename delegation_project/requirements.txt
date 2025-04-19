@@ -1,0 +1,11 @@
+Django==5.2
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.3.1
+django-environ==0.11.2
+django-filter==25.1
+psycopg2-binary==2.9.9
+whitenoise==6.6.0
+Pillow==10.2.0  # For image handling
+python-dateutil==2.8.2  # For date manipulation
+pytz==2024.1  # For timezone support 

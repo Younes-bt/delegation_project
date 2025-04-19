@@ -1,0 +1,22 @@
+{
+    "welcome": "Bienvenue à l'application Delegation",
+    "description": "Ceci est la page d'accueil publique avec thème sombre/clair et commutateur de langue.",
+    "language": "Langue",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contactez-nous",
+    "delegation": "entraide nationale", 
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "invalidEmailOrPassword": "Email ou mot de passe invalide",
+    "dashboard": "Tableau de bord",
+    "Logging in": "Connexion en cours..."
+  }
+  

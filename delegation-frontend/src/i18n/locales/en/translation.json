@@ -1,0 +1,22 @@
+{
+    "welcome": "Welcome to Delegation App",
+    "description": "This is the public homepage with dark/light mode and language switcher.",
+    "language": "Language",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact Us",
+    "login": "Login", 
+    "logout": "Logout",
+    "delegation": "National Help",  
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "email": "Email",
+    "password": "Password",
+    "invalidEmailOrPassword": "Invalid email or password",
+    "dashboard": "Dashboard",
+    "Logging in": "Logging in..."
+  }
+  

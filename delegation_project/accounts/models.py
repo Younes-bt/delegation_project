@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -17,6 +18,7 @@ class CustomUser(AbstractUser):
         ('association_staff', 'Association_staff'),
         ('teacher', 'Teacher'),
         ('student', 'Student'),
+        ('center_staff', 'Center_staff'),
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
@@ -38,6 +40,7 @@ ROLE_CHOICES = (
     ('association', 'Association'),
     ('teacher', 'Teacher'),
     ('student', 'Student'),
+    ('center_staff', 'Center_staff'),
 )
 
 GROUP_CHOICES = (
@@ -138,6 +141,40 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.role} : {self.first_name} {self.last_name}"
+
+class Material(models.Model):
+    SITUATION_CHOICES = [
+        ('GOOD', 'Good'),
+        ('FAIR', 'Fair'),
+        ('POOR', 'Poor'),
+        ('BROKEN', 'Broken'),
+        ('MAINTENANCE', 'Under Maintenance'),
+    ]
+
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    picture = models.ImageField(upload_to='materials/', blank=True, null=True)
+    situation = models.CharField(max_length=20, choices=SITUATION_CHOICES, default='GOOD')
+    quantity = models.PositiveIntegerField(default=1)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='materials')
+    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='materials')
+    purchase_date = models.DateField(blank=True, null=True)
+    last_maintenance_date = models.DateField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['room', 'title']
+        verbose_name_plural = "Materials"
+
+    def __str__(self):
+        return f"{self.title} - {self.room.name} ({self.get_situation_display()})"
+
+    def clean(self):
+        # Ensure the room belongs to the selected center
+        if self.room.center != self.center:
+            raise ValidationError("Room must belong to the selected center")
 
 
 

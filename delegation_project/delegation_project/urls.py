@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from accounts.views import UserCreateView, UserDetailView
@@ -13,4 +12,6 @@ urlpatterns = [
     path('accounts/auth/', include('rest_framework.urls')),
     path('accounts/', include('accounts.urls')),
     path('training/', include('training.urls')),
+    path('api/timetable/', include('class_timetable.urls')),
+    path('api/reports/', include('reports.urls')),  # All attendance reporting endpoints
 ]

@@ -1,9 +1,15 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Association, Center, Training, City, UserProfile, Room
-
-
+from .models import Association, Center, Training, City, UserProfile, Room, Material
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 User = get_user_model()
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['role'] = user.role  # Add role to token
+        return token
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,9 +32,10 @@ class CenterSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TrainingSerializer(serializers.ModelSerializer):
+    center = serializers.StringRelatedField()  # Returns center.name
     class Meta:
         model = Training
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'is_active', 'center']
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,6 +73,39 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'
+
+class MaterialSerializer(serializers.ModelSerializer):
+    room_name = serializers.SerializerMethodField()
+    center_name = serializers.SerializerMethodField()
+    situation_display = serializers.SerializerMethodField()
+    center = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Material
+        fields = [
+            'id', 'title', 'description', 'picture', 'situation', 'situation_display',
+            'quantity', 'room', 'room_name', 'center', 'center_name',
+            'purchase_date', 'last_maintenance_date', 'notes',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at', 'center']
+
+    def get_room_name(self, obj):
+        return obj.room.name
+
+    def get_center_name(self, obj):
+        return obj.center.name
+
+    def get_situation_display(self, obj):
+        return obj.get_situation_display()
+
+    def validate_room(self, value):
+        # Ensure the room belongs to the user's center
+        request = self.context.get('request')
+        if request and request.user.role == 'center_staff':
+            if value.center != request.user.userprofile.center:
+                raise serializers.ValidationError("You can only add materials to rooms in your center")
+        return value
 
 
 

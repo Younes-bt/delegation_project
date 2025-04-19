@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# delegation_project/.cursorrules
+Project: Delegation Project - Management system for training programs in Morocco
+Tech Stack: Django REST Framework, PostgreSQL, React.js, Shadcn UI, Tailwind CSS, Vite
+Models:
+- CustomUser: role (TEACHER, ADMIN, etc.), email, password
+- UserProfile: first_name, last_name, role, training (ForeignKey), center
+- Training: name, description, is_active
+- AnnualDistribution: month, week, teacher (ForeignKey), training, title, details
+Endpoints:
+- GET /accounts/trainings/me/: List trainings for teacher (via UserProfile)
+- GET /training/annual-distributions/: List distributions for teacher
+- GET /accounts/profiles/me/: Get user profile
+Next Steps:
+- Enhance dashboard: responsive sidebar, profile card
+- Add models: Course, Exercise, Mark
+Guidelines:
+- Use Shadcn UI and Tailwind CSS for frontend
+- Follow Django REST Framework conventions
+- Ensure JWT authentication

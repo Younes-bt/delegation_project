@@ -3,13 +3,11 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import action
-from .models import Course, Exercise, Progress, Submission, Attendance, Mark
-from .serializers import CourseSerializer, ExerciseSerializer, ProgressSerializer, SubmissionSerializer, AttendanceSerializer, MarkSerializer
-
+from rest_framework.permissions import IsAuthenticated
+from .models import  Exercise, Progress, Submission, Attendance, Mark, AnnualDistribution
+from .serializers import  ExerciseSerializer, ProgressSerializer, SubmissionSerializer, AttendanceSerializer, MarkSerializer, AnnualDistributionSerializer
+from rest_framework.views import APIView
 # --- Course ViewSet ---
-class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
 
 
 # --- Exercise ViewSet ---
@@ -38,3 +36,12 @@ class AttendanceViewSet(viewsets.ModelViewSet):
 class MarkViewSet(viewsets.ModelViewSet):
     queryset = Mark.objects.all()
     serializer_class = MarkSerializer
+
+# --- Annual Distribution ViewSet ---
+class AnnualDistributionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        distributions = AnnualDistribution.objects.filter(teacher=request.user)
+        serializer = AnnualDistributionSerializer(distributions, many=True)
+        return Response(serializer.data)
